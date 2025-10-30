@@ -326,14 +326,9 @@ public class RWMRuleParser {
             let scanner = Scanner(string: part)
             var count = 0
             scanner.scanInt(&count)
-            var weekday: NSString?
-            if scanner.scanCharacters(from: .alphanumerics, into: &weekday) && scanner.isAtEnd {
-                if let weekday = weekday, let dow = parse(byWeekStart: weekday as String) {
-                    let rec = count == 0 ? RWMRecurrenceDayOfWeek(dow) : RWMRecurrenceDayOfWeek(dow, weekNumber: count)
-                    res.append(rec)
-                } else {
-                    return nil
-                }
+            if let weekday = scanner.scanCharacters(from: .alphanumerics), scanner.isAtEnd, let dow = parse(byWeekStart: weekday as String) {
+                let rec = count == 0 ? RWMRecurrenceDayOfWeek(dow) : RWMRecurrenceDayOfWeek(dow, weekNumber: count)
+                res.append(rec)
             } else {
                 return nil
             }
